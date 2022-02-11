@@ -3,7 +3,7 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode, Pagination } from "swiper";
+import { Mousewheel, Navigation, FreeMode, Pagination } from "swiper";
 
 const ListProducts = ({ products, category }) => {
     return (
@@ -12,14 +12,12 @@ const ListProducts = ({ products, category }) => {
                 {category}
             </h2>
             <div className="products">
-                <Swiper slidesPerView={3}
+                <Swiper slidesPerView="auto"
                     spaceBetween={30}
                     freeMode={true}
-                    navigation
-                    pagination={{
-                        clickable: true,
-                    }}
-                    modules={[FreeMode, Pagination]}
+                    navigation={true}
+                    pagination={{ clickable: true }}
+                    modules={[Navigation,FreeMode, Pagination]}
                     className="mySwiper">
                     {products.map(product => <SwiperSlide key={product.date} ><Product product={product} /></SwiperSlide>)}
                 </Swiper>

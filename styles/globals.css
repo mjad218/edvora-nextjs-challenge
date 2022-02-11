@@ -87,6 +87,26 @@ main > aside > ul > li {
 main>div {
   width: calc(100% - 228px - 40px);
 }
+@media screen and (max-width: 980px) {
+  main {
+    flex-direction: column;
+  }
+  main>div {
+    width: 100%;
+  }
+  main>aside {
+    width: 100%;
+  }
+}
+.swiper-slide {
+  min-width: 250px;
+  max-width: 300px;
+}
+@media screen and (max-width: 500px) {
+  .swiper-slide {
+    min-width: 100%;
+  }
+}
 .listing h2 {
   font-size: 20px;
   line-height: 23px;
