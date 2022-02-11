@@ -18,10 +18,10 @@ const Product = ({product}) => {
             <div className="meta"> 
                 <div> 
                     <span className="location" > 
-                        {product.address.state + ", " + product.address.city }
+                        Location: {product.address.state + ", " + product.address.city }
                     </span>
                     <span className="date" > 
-                        {product.date}
+                        Date: {new Date(product.date).toDateString()}
                     </span>
                 </div>
                 <p className="description">

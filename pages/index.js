@@ -5,32 +5,25 @@ import ListProducts from '../comps/ListProducts';
 import styles from '../styles/Home.module.css'
 
 const filterProducts = (products) => {
-  const productsByName = {};
-  const productsByState = {};
-  const productsByCity = {};
+  const productsByName = {}, productsByState = {}, productsByCity = {};
   products.forEach(product => {
     const name = product.product_name;
-    if (!productsByName[name]) {
+    if (!productsByName[name])
       productsByName[name] = [];
-    }
     productsByName[name].push(product);
-
-    const state = product.address.state; 
-    if (!productsByState[state]) {
+    const state = product.address.state;
+    if (!productsByState[state])
       productsByState[state] = [];
-    }
     productsByState[state].push(product);
-
-    const city = product.address.city; 
-    if (!productsByCity[city]) {
+    const city = product.address.city;
+    if (!productsByCity[city])
       productsByCity[city] = [];
-    }
     productsByCity[city].push(product);
   });
   return [
-    {by : "Products", products : productsByName},
-    {by : "State", products : productsByState},
-    {by : "City", products : productsByCity}
+    { by: "Products", products: productsByName },
+    { by: "State", products: productsByState },
+    { by: "City", products: productsByCity }
   ];
 }
 export const getStaticProps = async () => {
@@ -45,27 +38,21 @@ export const getStaticProps = async () => {
   }
 }
 
-export default function Home({products, filteredProducts}) {
-  const [displayedProducts, setDisplayedProducts] = useState(filteredProducts);  
+export default function Home({ products, filteredProducts }) {
+  const [displayedProducts, setDisplayedProducts] = useState(filteredProducts);
   const handleFilterAction = (e) => {
-    const filterBy = e.target.attributes.type.textContent;
-    const filterValue = e.target.outerText;
-    console.log(filterBy); 
-    console.log(filterValue);
-    const productsUpdated = []; 
-
-    if(filterBy === "Products" ) {
-      productsUpdated = products.filter( product => product.product_name === filterValue)
+    const filterBy = e.target.attributes.type.textContent,
+    filterValue = e.target.outerText,
+    productsUpdated = [];
+    if (filterBy === "Products") {
+      productsUpdated = products.filter(product => product.product_name === filterValue)
     } else if (filterBy === "City") {
-      productsUpdated = products.filter( product => product.address.city === filterValue)
+      productsUpdated = products.filter(product => product.address.city === filterValue)
     } else {
-      productsUpdated = products.filter( product => product.address.state === filterValue)
+      productsUpdated = products.filter(product => product.address.state === filterValue)
     }
     setDisplayedProducts(filterProducts(productsUpdated));
   }
-  useEffect(() => {
-
-  }, filteredProducts)
   return (
     <div className={styles.container}>
       <Head>
@@ -79,12 +66,12 @@ export default function Home({products, filteredProducts}) {
             Filters
           </span>
           <ul>
-            {displayedProducts.map( filter =>
-              <li key={filter.by}> 
+            {displayedProducts.map(filter =>
+              <li key={filter.by}>
                 {filter.by}
-                {Object.keys(filter.products).length && <ul> {Object.keys(filter.products).map( name => <li type={filter.by} onClick={handleFilterAction} key={name}>{name}</li>)}</ul>}
-              </li> 
-              )}
+                {Object.keys(filter.products).length && <ul> {Object.keys(filter.products).map(name => <li type={filter.by} onClick={handleFilterAction} key={name}>{name}</li>)}</ul>}
+              </li>
+            )}
           </ul>
         </aside>
         <div>
@@ -92,12 +79,12 @@ export default function Home({products, filteredProducts}) {
             Edvora
           </h1>
           <p>Products</p>
-          {!products.length && "There are no products"} 
+          {!products.length && "There are no products"}
           {Object.values(displayedProducts[0].products).map(products => <ListProducts key={products[0].product_name} products={products} category={products[0].product_name} />)}
         </div>
       </main>
       <footer>
-          Created by Mohamed Gad
+        Created by Mohamed Gad
       </footer>
     </div>
   )
