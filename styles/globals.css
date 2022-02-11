@@ -53,6 +53,9 @@ main > aside > span {
 main > aside > ul > li > ul {
   display: none;
 }
+main > aside > ul > li > ul.show {
+  display: block;
+}
 main > aside ul, main > aside li {
   padding: 0;
   margin: 0;
