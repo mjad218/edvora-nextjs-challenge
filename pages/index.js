@@ -33,11 +33,11 @@ export default function Home({products, productsByName}) {
       </Head>
       <h1>
         Edvora
-        {console.log( productsByName)}
       </h1>
       <p>Products</p>
       <main className={styles.main}>
-      <ListProducts products={products} />
+        {console.log(Object.values(productsByName))}
+        {Object.values(productsByName).map( products => <ListProducts key={products[0].product_name} products={products} category={products[0].product_name}/>)}
       </main>
 
       <footer className={styles.footer}>

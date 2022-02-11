@@ -7,7 +7,7 @@ const ListProducts = ({products, category}) => {
                 {category}
             </h2>
             <div className="products">
-                {products.map(product => <Product product={product}/>) }
+                {products.map(product => <Product key={product.date} product={product}/>) }
             </div>
         </div>
     );
