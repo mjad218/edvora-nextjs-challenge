@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import ListProducts from '../comps/ListProducts';
 import styles from '../styles/Home.module.css'
 import Script from 'next/script'
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const filterProducts = (products) => {
   const productsByName = {}, productsByState = {}, productsByCity = {};
@@ -70,6 +72,7 @@ export default function Home({ products, filteredProducts }) {
             {displayedProducts.map(filter =>
               <li key={filter.by}>
                 {filter.by}
+                <FontAwesomeIcon icon={faCaretDown} />
                 {Object.keys(filter.products).length && <ul> {Object.keys(filter.products).map(name => <li type={filter.by} onClick={handleFilterAction} key={name}>{name}</li>)}</ul>}
               </li>
             )}
