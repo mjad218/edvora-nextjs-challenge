@@ -79,6 +79,7 @@ export default function Home({ products, productsByName, productsByState, produc
             Edvora
           </h1>
           <p>Products</p>
+          {!products.length && "There are no products"} 
           {Object.values(productsByName).map(products => <ListProducts key={products[0].product_name} products={products} category={products[0].product_name} />)}
         </div>
       </main>
