@@ -7,13 +7,23 @@ export const getStaticProps = async () => {
   const API_URL = `https://assessment-edvora.herokuapp.com`;
   const res = await fetch(API_URL);
   const products = await res.json();
+
+  const productsByName = {};
+  products.forEach(product => {
+    const name = product.product_name;
+    if(!productsByName[name]) {
+      productsByName[name] = [];
+    }
+    productsByName[name].push(product);
+  });
   return {
     props: { 
-      products
+      products, 
+      productsByName
     }
   }
 }
-export default function Home({products}) {
+export default function Home({products, productsByName}) {
   return (
     <div className={styles.container}>
       <Head>
@@ -23,6 +33,7 @@ export default function Home({products}) {
       </Head>
       <h1>
         Edvora
+        {console.log( productsByName)}
       </h1>
       <p>Products</p>
       <main className={styles.main}>
