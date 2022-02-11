@@ -34,13 +34,15 @@ export const getStaticProps = async () => {
   return {
     props: {
       products,
-      productsByName,
-      productsByState,
-      productsByCity
+      filteredProducts: [ 
+        {by : "Products", products : productsByName},
+        {by : "State", products : productsByState},
+        {by : "City", products : productsByCity}
+      ]
     }
   }
 }
-export default function Home({ products, productsByName, productsByState, productsByCity }) {
+export default function Home({ products, filteredProducts}) {
   return (
     <div className={styles.container}>
       <Head>
@@ -54,24 +56,12 @@ export default function Home({ products, productsByName, productsByState, produc
             Filters
           </span>
           <ul>
-            <li>
-              Products
-              <ul>
-                {Object.keys(productsByName).map( name => <li key={name} >{name}</li>)}
-              </ul>
-            </li>
-            <li>
-              State
-              <ul>
-              {Object.keys(productsByState).map( name => <li key={name} >{name}</li>)}
-              </ul>
-            </li>
-            <li>
-              city
-              <ul>
-              {Object.keys(productsByCity).map( name => <li key={name} >{name}</li>)}
-              </ul>
-            </li>
+            {filteredProducts.map( filter =>
+              <li key={filter.by}> 
+                {filter.by}
+                {Object.keys(filter.products).length && <ul> {Object.keys(filter.products).map( name => <li key={name}>{name}</li>)}</ul>}
+              </li> 
+              )}
           </ul>
         </aside>
         <div>
@@ -80,17 +70,11 @@ export default function Home({ products, productsByName, productsByState, produc
           </h1>
           <p>Products</p>
           {!products.length && "There are no products"} 
-          {Object.values(productsByName).map(products => <ListProducts key={products[0].product_name} products={products} category={products[0].product_name} />)}
+          {Object.values(filteredProducts[0].products).map(products => <ListProducts key={products[0].product_name} products={products} category={products[0].product_name} />)}
         </div>
       </main>
       <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
           Created by Mohamed Gad
-        </a>
       </footer>
     </div>
   )
