@@ -1,13 +1,10 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import { useEffect, useState } from 'react';
 import ListProducts from '../comps/ListProducts';
 import styles from '../styles/Home.module.css'
 
-export const getStaticProps = async () => {
-  const API_URL = `https://assessment-edvora.herokuapp.com`;
-  const res = await fetch(API_URL);
-  const products = await res.json();
-
+const filterProducts = (products) => {
   const productsByName = {};
   const productsByState = {};
   const productsByCity = {};
@@ -29,20 +26,46 @@ export const getStaticProps = async () => {
       productsByCity[city] = [];
     }
     productsByCity[city].push(product);
-
   });
+  return [
+    {by : "Products", products : productsByName},
+    {by : "State", products : productsByState},
+    {by : "City", products : productsByCity}
+  ];
+}
+export const getStaticProps = async () => {
+  const API_URL = `https://assessment-edvora.herokuapp.com`;
+  const res = await fetch(API_URL);
+  const products = await res.json();
   return {
     props: {
       products,
-      filteredProducts: [ 
-        {by : "Products", products : productsByName},
-        {by : "State", products : productsByState},
-        {by : "City", products : productsByCity}
-      ]
+      filteredProducts: filterProducts(products)
     }
   }
 }
-export default function Home({ products, filteredProducts}) {
+
+export default function Home({products, filteredProducts}) {
+  const [displayedProducts, setDisplayedProducts] = useState(filteredProducts);  
+  const handleFilterAction = (e) => {
+    const filterBy = e.target.attributes.type.textContent;
+    const filterValue = e.target.outerText;
+    console.log(filterBy); 
+    console.log(filterValue);
+    const productsUpdated = []; 
+
+    if(filterBy === "Products" ) {
+      productsUpdated = products.filter( product => product.product_name === filterValue)
+    } else if (filterBy === "City") {
+      productsUpdated = products.filter( product => product.address.city === filterValue)
+    } else {
+      productsUpdated = products.filter( product => product.address.state === filterValue)
+    }
+    setDisplayedProducts(filterProducts(productsUpdated));
+  }
+  useEffect(() => {
+
+  }, filteredProducts)
   return (
     <div className={styles.container}>
       <Head>
@@ -56,10 +79,10 @@ export default function Home({ products, filteredProducts}) {
             Filters
           </span>
           <ul>
-            {filteredProducts.map( filter =>
+            {displayedProducts.map( filter =>
               <li key={filter.by}> 
                 {filter.by}
-                {Object.keys(filter.products).length && <ul> {Object.keys(filter.products).map( name => <li key={name}>{name}</li>)}</ul>}
+                {Object.keys(filter.products).length && <ul> {Object.keys(filter.products).map( name => <li type={filter.by} onClick={handleFilterAction} key={name}>{name}</li>)}</ul>}
               </li> 
               )}
           </ul>
@@ -70,7 +93,7 @@ export default function Home({ products, filteredProducts}) {
           </h1>
           <p>Products</p>
           {!products.length && "There are no products"} 
-          {Object.values(filteredProducts[0].products).map(products => <ListProducts key={products[0].product_name} products={products} category={products[0].product_name} />)}
+          {Object.values(displayedProducts[0].products).map(products => <ListProducts key={products[0].product_name} products={products} category={products[0].product_name} />)}
         </div>
       </main>
       <footer>
