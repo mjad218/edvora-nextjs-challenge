@@ -35,7 +35,7 @@ export default function Home({products, productsByName}) {
         Edvora
       </h1>
       <p>Products</p>
-      <main className={styles.main}>
+      <main>
         {console.log(Object.values(productsByName))}
         {Object.values(productsByName).map( products => <ListProducts key={products[0].product_name} products={products} category={products[0].product_name}/>)}
       </main>

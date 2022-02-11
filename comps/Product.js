@@ -1,6 +1,6 @@
 const Product = ({product}) => {
     return (
-        <div>
+        <div className="product">
             <div className="info"> 
                 <img src={product.image} />
                 <div> 
@@ -11,7 +11,7 @@ const Product = ({product}) => {
                         {product.brand_name}
                     </span>
                     <span className="price">
-                        {product.price}
+                       $ {product.price}
                     </span>
                 </div>
             </div>
