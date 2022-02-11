@@ -9,21 +9,38 @@ export const getStaticProps = async () => {
   const products = await res.json();
 
   const productsByName = {};
+  const productsByState = {};
+  const productsByCity = {};
   products.forEach(product => {
     const name = product.product_name;
     if (!productsByName[name]) {
       productsByName[name] = [];
     }
     productsByName[name].push(product);
+
+    const state = product.address.state; 
+    if (!productsByState[state]) {
+      productsByState[state] = [];
+    }
+    productsByState[state].push(product);
+
+    const city = product.address.city; 
+    if (!productsByCity[city]) {
+      productsByCity[city] = [];
+    }
+    productsByCity[city].push(product);
+
   });
   return {
     props: {
       products,
-      productsByName
+      productsByName,
+      productsByState,
+      productsByCity
     }
   }
 }
-export default function Home({ products, productsByName }) {
+export default function Home({ products, productsByName, productsByState, productsByCity }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -40,19 +57,19 @@ export default function Home({ products, productsByName }) {
             <li>
               Products
               <ul>
-
+                {Object.keys(productsByName).map( name => <li key={name} >{name}</li>)}
               </ul>
             </li>
             <li>
               State
               <ul>
-
+              {Object.keys(productsByState).map( name => <li key={name} >{name}</li>)}
               </ul>
             </li>
             <li>
               city
               <ul>
-
+              {Object.keys(productsByCity).map( name => <li key={name} >{name}</li>)}
               </ul>
             </li>
           </ul>
