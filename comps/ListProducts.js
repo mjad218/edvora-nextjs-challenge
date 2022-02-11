@@ -2,7 +2,7 @@ import Product from "./Product";
 
 const ListProducts = ({products, category}) => {
     return (
-        <div class="listing">
+        <div className  ="listing">
             <h2>
                 {category}
             </h2>
